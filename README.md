@@ -1,4 +1,4 @@
-# diverspetitstrucssympathiques
+# Divers Petits Trucs Sympathiques
 
 ## Constante de Kaprekar (6174)
 
