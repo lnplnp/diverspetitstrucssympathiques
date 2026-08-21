@@ -3,15 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Constante de Kaprekar (6174)</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Constante de Kaprekar</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Constante de Kaprekar (6174)</h1>
-        <p>Entrez un nombre à 4 chiffres (non tous identiques, ex: 1000, 1110, 3524).</p>
+        <h1>Constante de Kaprekar</h1>
+        <p>Choisissez le nombre de chiffres et entrez un nombre pour découvrir sa constante de Kaprekar.</p>
         
-        <input type="number" id="numberInput" placeholder="Ex: 1000, 3524" min="1" max="9999">
+        <div class="input-group">
+            <label for="digitCount">Nombre de chiffres (n) :</label>
+            <select id="digitCount">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </div>
+        
+        <input type="text" id="numberInput" placeholder="Ex: 1000, 3524" inputmode="numeric" pattern="[0-9]*">
         <button onclick="calculateKaprekar()">Calculer</button>
         
         <div id="result"></div>
