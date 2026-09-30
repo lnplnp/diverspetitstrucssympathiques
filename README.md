@@ -1,5 +1,7 @@
 # Divers Petits Trucs Sympathiques
 
+Collection de petites applications web interactives autour d'astuces mathématiques.
+
 ## Constante de Kaprekar
 
 Ce dossier contient une page web interactive qui démontre **la constante de Kaprekar pour n'importe quelle taille de nombre entre 2 et 10 chiffres**. 
@@ -31,3 +33,19 @@ La constante de Kaprekar est un phénomène mathématique fascinant : en appliqu
 3. Cliquez sur "Calculer" pour voir les étapes jusqu'à la constante.
 
 La page affichera les opérations intermédiaires et mettra en évidence la constante finale.
+
+## Le tour des centaines
+
+Ce dossier contient une page web interactive dédiée à **la multiplication mentale rapide de deux nombres proches de 100**.
+
+L'astuce repose sur l'identité algébrique `A × B = 100 × (A − b) + (a × b)`, où `a` et `b` sont les écarts de A et B par rapport à 100. Elle permet de calculer de tête, en quelques secondes, des produits comme 88 × 96 ou 107 × 108.
+
+### Fonctionnalités
+- **Démonstrateur pas-à-pas** : Entrez deux nombres (50 à 150) et visualisez la décomposition complète en 4 étapes (écarts, produit des écarts, opération croisée, assemblage), avec gestion des cas particuliers (retenue, padding, nombres de part et d'autre de 100).
+- **Entraînement (quiz)** : Génération aléatoire de multiplications proches de 100, avec score, série de bonnes réponses, précision, et solution détaillée à la demande.
+- **Théorie** : Démonstration algébrique de la méthode et réponses aux questions fréquentes (commutativité, retenue, nombres supérieurs à 100).
+
+### Utilisation
+1. Ouvrez `index.html` dans un navigateur.
+2. Testez des exemples classiques (88 × 96, 107 × 108...) ou entrez vos propres nombres.
+3. Passez en mode Entraînement pour vous exercer, ou consultez l'onglet Théorie pour comprendre le fondement mathématique.
