@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calcul Mental - Astuce Base 100</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        accent: {
+                            teal: '#14b8a6',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            rose: '#f43f5e',
+                            cyan: '#06b6d4',
+                        },
+                        darkbg: '#0b0f17',
+                        darkcard: '#151c2c',
+                        darkborder: '#232d42'
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0f17;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(at 10% 10%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, rgba(20, 184, 166, 0.12) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        .glass-card {
+            background: rgba(21, 28, 44, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        .glass-card-sm {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .glow-brand {
+            box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .glow-accent {
+            box-shadow: 0 0 25px -5px rgba(20, 184, 166, 0.4);
+        }
+
+        /* Smooth transitions */
+        .tab-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f17;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #232d42;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="border-b border-darkborder/80 sticky top-0 z-50 bg-darkbg/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-accent-teal flex items-center justify-center text-white shadow-lg glow-brand">
+                    <i class="fa-solid fa-bolt text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent">
+                        Maths Flash <span class="text-xs px-2 py-0.5 rounded-full bg-brand-500/20 text-brand-500 font-mono border border-brand-500/30">Base 100</span>
+                    </h1>
+                    <p class="text-xs text-gray-400 hidden sm:block">Multiplication rapide de tête</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex space-x-1 sm:space-x-2 bg-darkcard/80 p-1 rounded-xl border border-darkborder">
+                <button id="tab-demo-btn" onclick="switchTab('demo')" class="tab-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center space-x-2 bg-brand-600 text-white shadow-md">
+                    <i class="fa-solid fa-calculator"></i>
+                    <span>Démonstrateur</span>
+                </button>
+                <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="tab-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <span>Entraînement</span>
+                </button>
+                <button id="tab-theory-btn" onclick="switchTab('theory')" class="tab-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center space-x-2 text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-square-root-variable"></i>
+                    <span>Théorie</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- TAB 1: DEMONSTRATEUR INTERACTIF -->
+        <section id="tab-demo" class="space-y-8 fade-in">
+            <!-- Hero Banner -->
+            <div class="glass-card rounded-2xl p-6 sm:p-8 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-brand-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="max-w-3xl">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent-teal/10 text-accent-teal border border-accent-teal/20 mb-3">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> Astuce de calcul mental
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                        Multipliez deux nombres proches de 100 en 3 secondes.
+                    </h2>
+                    <p class="mt-2 text-gray-400 text-sm sm:text-base leading-relaxed">
+                        Entrez deux nombres dans le calculateur ci-dessous. Observez la décomposition étape par étape pour comprendre la logique visuelle et instantanée de cette méthode.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Interactive Inputs & Visual Breakdown Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Left Column: Inputs & Controls -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="glass-card rounded-2xl p-6">
+                        <h3 class="text-lg font-bold text-white mb-4 flex items-center">
+                            <i class="fa-solid fa-sliders text-brand-500 mr-2.5"></i> Facteurs de multiplication
+                        </h3>
+                        
+                        <div class="space-y-5">
+                            <!-- Input A -->
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-gray-300 mb-2">
+                                    <label for="input-a">Premier nombre (A)</label>
+                                    <span id="label-diff-a" class="font-mono text-accent-cyan">Écart : -12</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" id="input-a" value="88" min="50" max="150" 
+                                           class="w-full bg-darkbg/80 border border-darkborder focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-3 text-xl font-mono font-bold text-white outline-none transition"
+                                           oninput="calculateDemo()">
+                                    <div class="absolute right-3 top-1/2 -translate-y-1/2 flex space-x-1">
+                                        <button onclick="adjustValue('input-a', -1)" class="w-8 h-8 rounded-lg bg-darkcard border border-darkborder hover:bg-gray-700 text-gray-300 flex items-center justify-center font-bold text-sm">-</button>
+                                        <button onclick="adjustValue('input-a', 1)" class="w-8 h-8 rounded-lg bg-darkcard border border-darkborder hover:bg-gray-700 text-gray-300 flex items-center justify-center font-bold text-sm">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Input B -->
+                            <div>
+                                <div class="flex justify-between text-xs font-semibold text-gray-300 mb-2">
+                                    <label for="input-b">Second nombre (B)</label>
+                                    <span id="label-diff-b" class="font-mono text-accent-cyan">Écart : -4</span>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" id="input-b" value="96" min="50" max="150" 
+                                           class="w-full bg-darkbg/80 border border-darkborder focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-3 text-xl font-mono font-bold text-white outline-none transition"
+                                           oninput="calculateDemo()">
+                                    <div class="absolute right-3 top-1/2 -translate-y-1/2 flex space-x-1">
+                                        <button onclick="adjustValue('input-b', -1)" class="w-8 h-8 rounded-lg bg-darkcard border border-darkborder hover:bg-gray-700 text-gray-300 flex items-center justify-center font-bold text-sm">-</button>
+                                        <button onclick="adjustValue('input-b', 1)" class="w-8 h-8 rounded-lg bg-darkcard border border-darkborder hover:bg-gray-700 text-gray-300 flex items-center justify-center font-bold text-sm">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Presets -->
+                            <div>
+                                <p class="text-xs font-semibold text-gray-400 mb-2">Exemples classiques :</p>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="setPreset(88, 96)" class="glass-card-sm hover:bg-brand-500/20 hover:border-brand-500/40 py-2 px-3 rounded-lg text-xs font-mono text-gray-300 hover:text-white transition text-center">88 × 96</button>
+                                    <button onclick="setPreset(92, 98)" class="glass-card-sm hover:bg-brand-500/20 hover:border-brand-500/40 py-2 px-3 rounded-lg text-xs font-mono text-gray-300 hover:text-white transition text-center">92 × 98</button>
+                                    <button onclick="setPreset(107, 108)" class="glass-card-sm hover:bg-brand-500/20 hover:border-brand-500/40 py-2 px-3 rounded-lg text-xs font-mono text-gray-300 hover:text-white transition text-center">107 × 108</button>
+                                    <button onclick="setPreset(95, 94)" class="glass-card-sm hover:bg-brand-500/20 hover:border-brand-500/40 py-2 px-3 rounded-lg text-xs font-mono text-gray-300 hover:text-white transition text-center">95 × 94</button>
+                                    <button onclick="setPreset(85, 88)" class="glass-card-sm hover:bg-brand-500/20 hover:border-brand-500/40 py-2 px-3 rounded-lg text-xs font-mono text-gray-300 hover:text-white transition text-center">85 × 88 <span class="text-[10px] text-amber-400">(ret.)</span></button>
+                                    <button onclick="setPreset(104, 96)" class="glass-card-sm hover:bg-brand-500/20 hover:border-brand-500/40 py-2 px-3 rounded-lg text-xs font-mono text-gray-300 hover:text-white transition text-center">104 × 96 <span class="text-[10px] text-rose-400">(myste)</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final Result Large Box -->
+                    <div class="glass-card rounded-2xl p-6 bg-gradient-to-br from-brand-900/40 to-darkcard border-brand-500/30 text-center relative overflow-hidden">
+                        <div class="text-xs font-bold uppercase tracking-wider text-brand-500 mb-1">Résultat Final</div>
+                        <div id="final-result" class="text-4xl sm:text-5xl font-extrabold font-mono text-white tracking-wider my-2">8448</div>
+                        <div id="final-check" class="text-xs text-gray-400 font-mono">Vérification : 88 × 96 = 8448</div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Step-by-Step Breakdown -->
+                <div class="lg:col-span-7 space-y-4">
+                    
+                    <!-- Step 1 -->
+                    <div class="glass-card rounded-2xl p-5 border-l-4 border-l-accent-teal relative">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent-teal flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-accent-teal/20 text-accent-teal flex items-center justify-center mr-2 text-xs">1</span>
+                                Étape 1 : Écarts à 100
+                            </span>
+                            <span class="text-xs text-gray-400">Calcul des résidus</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 bg-darkbg/60 p-4 rounded-xl border border-darkborder font-mono text-sm sm:text-base">
+                            <div id="step1-a" class="text-center">
+                                <span class="text-gray-400 text-xs block font-sans">Écart A</span>
+                                <span class="text-white">100 - 88 = </span><span class="text-accent-teal font-bold">12</span>
+                            </div>
+                            <div id="step1-b" class="text-center border-l border-darkborder">
+                                <span class="text-gray-400 text-xs block font-sans">Écart B</span>
+                                <span class="text-white">100 - 96 = </span><span class="text-accent-teal font-bold">4</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="glass-card rounded-2xl p-5 border-l-4 border-l-accent-amber relative">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent-amber flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-accent-amber/20 text-accent-amber flex items-center justify-center mr-2 text-xs">2</span>
+                                Étape 2 : Produit des écarts (Partie Droite)
+                            </span>
+                            <span class="text-xs text-gray-400">Multiplication des écarts</span>
+                        </div>
+                        <div class="bg-darkbg/60 p-4 rounded-xl border border-darkborder space-y-2">
+                            <div id="step2-calc" class="font-mono text-center text-sm sm:text-base">
+                                <span class="text-accent-teal">12</span> × <span class="text-accent-teal">4</span> = <span class="text-accent-amber font-bold text-xl">48</span>
+                            </div>
+                            <p id="step2-note" class="text-xs text-gray-400 text-center">
+                                Donne les deux derniers chiffres du résultat : <strong class="text-accent-amber font-mono">48</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="glass-card rounded-2xl p-5 border-l-4 border-l-brand-500 relative">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-brand-500 flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center mr-2 text-xs">3</span>
+                                Étape 3 : Opération croisée (Partie Gauche)
+                            </span>
+                            <span class="text-xs text-gray-400">Soustraction/Addition sur la diagonale</span>
+                        </div>
+                        <div class="bg-darkbg/60 p-4 rounded-xl border border-darkborder space-y-2">
+                            <div id="step3-calc" class="font-mono text-center text-sm sm:text-base">
+                                88 - <span class="text-accent-teal">4</span> = <span class="text-brand-500 font-bold text-xl">84</span>
+                                <span class="text-gray-500 text-xs mx-2">(ou 96 - <span class="text-accent-teal">12</span> = 84)</span>
+                            </div>
+                            <p class="text-xs text-gray-400 text-center">
+                                Donne les premiers chiffres du résultat (que l'on multiplie virtuellement par 100).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="glass-card rounded-2xl p-5 border-l-4 border-l-accent-emerald relative">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent-emerald flex items-center">
+                                <span class="w-6 h-6 rounded-full bg-accent-emerald/20 text-accent-emerald flex items-center justify-center mr-2 text-xs">4</span>
+                                Étape 4 : Assemblage des bloc-chiffres
+                            </span>
+                            <span class="text-xs text-gray-400">Fusion des parties</span>
+                        </div>
+                        <div class="bg-darkbg/60 p-4 rounded-xl border border-darkborder flex flex-col sm:flex-row items-center justify-around gap-4">
+                            <div class="text-center font-mono">
+                                <div id="step4-left" class="text-2xl font-bold text-brand-500">84</div>
+                                <div class="text-[10px] text-gray-400 uppercase tracking-wider">Partie Gauche (×100)</div>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-600">+</div>
+                            <div class="text-center font-mono">
+                                <div id="step4-right" class="text-2xl font-bold text-accent-amber">48</div>
+                                <div class="text-[10px] text-gray-400 uppercase tracking-wider">Partie Droite</div>
+                            </div>
+                            <div class="text-2xl font-bold text-gray-600">=</div>
+                            <div class="text-center font-mono bg-brand-500/20 border border-brand-500/40 px-4 py-2 rounded-xl">
+                                <div id="step4-final" class="text-2xl font-extrabold text-white">8448</div>
+                                <div class="text-[10px] text-accent-emerald uppercase tracking-wider">Assemblage</div>
+                            </div>
+                        </div>
+                        <p id="step4-adjust-msg" class="mt-3 text-xs text-gray-400 text-center hidden">
+                            <!-- Retenue ou Padding Message -->
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ENTRAÎNEMENT INTERACTIF -->
+        <section id="tab-quiz" class="space-y-8 hidden fade-in">
+            <!-- Quiz Dashboard Header -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="glass-card rounded-2xl p-5 flex items-center space-x-4 border-l-4 border-brand-500">
+                    <div class="w-12 h-12 rounded-xl bg-brand-500/20 text-brand-500 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-400 uppercase font-semibold">Score Total</div>
+                        <div id="quiz-score" class="text-2xl font-bold text-white font-mono">0</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 flex items-center space-x-4 border-l-4 border-accent-amber">
+                    <div class="w-12 h-12 rounded-xl bg-accent-amber/20 text-accent-amber flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-400 uppercase font-semibold">Série (Streak)</div>
+                        <div id="quiz-streak" class="text-2xl font-bold text-white font-mono">0</div>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-5 flex items-center space-x-4 border-l-4 border-accent-teal">
+                    <div class="w-12 h-12 rounded-xl bg-accent-teal/20 text-accent-teal flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-gray-400 uppercase font-semibold">Précision</div>
+                        <div id="quiz-accuracy" class="text-2xl font-bold text-white font-mono">100%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Card -->
+            <div class="glass-card rounded-2xl p-6 sm:p-10 max-w-2xl mx-auto text-center space-y-6 relative overflow-hidden">
+                <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-500 border border-brand-500/30">
+                    <i class="fa-solid fa-brain mr-1.5"></i> Entraînement de Calcul Mental
+                </div>
+
+                <div class="space-y-2">
+                    <p class="text-sm text-gray-400">Calculez rapidement le produit suivant :</p>
+                    <div id="quiz-question" class="text-4xl sm:text-6xl font-extrabold font-mono text-white tracking-wider my-4">
+                        88 × 96
+                    </div>
+                </div>
+
+                <!-- Input & Answer controls -->
+                <form onsubmit="checkQuizAnswer(event)" class="max-w-md mx-auto space-y-4">
+                    <div class="relative">
+                        <input type="number" id="quiz-input" placeholder="Votre réponse..." autocomplete="off"
+                               class="w-full bg-darkbg border-2 border-darkborder focus:border-brand-500 focus:ring-0 rounded-xl px-4 py-3 text-center text-2xl font-mono font-bold text-white placeholder-gray-600 outline-none transition">
+                    </div>
+
+                    <div class="flex gap-3">
+                        <button type="submit" class="flex-1 bg-brand-600 hover:bg-brand-500 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-check"></i>
+                            <span>Valider</span>
+                        </button>
+                        <button type="button" onclick="revealQuizSolution()" class="bg-darkcard border border-darkborder hover:bg-gray-800 text-gray-300 font-semibold py-3.5 px-4 rounded-xl transition flex items-center justify-center" title="Afficher la solution">
+                            <i class="fa-solid fa-lightbulb"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Feedback Message -->
+                <div id="quiz-feedback" class="hidden rounded-xl p-4 text-sm font-medium transition-all"></div>
+
+                <!-- Detailed Solution Drawer -->
+                <div id="quiz-solution-box" class="hidden text-left bg-darkbg/80 border border-darkborder rounded-xl p-5 space-y-3 font-mono text-xs sm:text-sm">
+                    <div class="font-sans font-bold text-brand-500 uppercase tracking-wider text-xs">Explication détaillée :</div>
+                    <div id="quiz-solution-content" class="space-y-1 text-gray-300">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+
+                <!-- Next Question Button -->
+                <div class="pt-2">
+                    <button id="quiz-next-btn" onclick="generateQuizQuestion()" class="hidden w-full bg-accent-teal hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-xl transition items-center justify-center space-x-2">
+                        <span>Question Suivante</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: THÉORIE & PREUVE ALGÉBRIQUE -->
+        <section id="tab-theory" class="space-y-8 hidden fade-in">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 space-y-8">
+                <!-- Title -->
+                <div>
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-accent-cyan/10 text-accent-cyan border border-accent-cyan/20 mb-3">
+                        <i class="fa-solid fa-graduation-cap mr-1.5"></i> Fondements Mathématiques
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Pourquoi cette méthode fonctionne-t-elle toujours ?</h2>
+                    <p class="text-gray-400 mt-2 text-sm sm:text-base">
+                        Cette astuce n'est pas de la magie : elle découle directement du développement classique d'une identité algébrique par rapport à une base universelle ($B = 100$).
+                    </p>
+                </div>
+
+                <!-- Proof Box -->
+                <div class="bg-darkbg/80 border border-darkborder rounded-xl p-6 space-y-4">
+                    <h3 class="text-base font-bold text-brand-500 uppercase tracking-wider">1. La Démonstration en 3 Lignes</h3>
+                    <p class="text-sm text-gray-300">
+                        Soient deux nombres $A$ et $B$. Posons leurs écarts respectifs par rapport à $100$ : $a = 100 - A$ et $b = 100 - B$.
+                    </p>
+                    
+                    <div class="p-4 bg-darkcard rounded-xl font-mono text-xs sm:text-base text-gray-200 space-y-2 border border-darkborder">
+                        <div><span class="text-gray-500">A × B</span> = (100 - a) × (100 - b)</div>
+                        <div><span class="text-gray-500">     </span> = 100×100 - 100b - 100a + (a × b)</div>
+                        <div><span class="text-gray-500">     </span> = <span class="text-brand-500 font-bold">100 × (100 - a - b)</span> + <span class="text-accent-amber font-bold">(a × b)</span></div>
+                    </div>
+
+                    <p class="text-sm text-gray-300">
+                        Puisque <span class="font-mono text-brand-500">100 - a - b = (100 - a) - b = A - b</span> (ou de façon identique <span class="font-mono text-brand-500">B - a</span>), la formule générale s'écrit :
+                    </p>
+
+                    <div class="p-4 bg-gradient-to-r from-brand-900/40 to-accent-teal/10 border border-brand-500/30 rounded-xl text-center font-mono text-base sm:text-xl font-bold text-white">
+                        A × B = 100 × (A - b) + (a × b)
+                    </div>
+                </div>
+
+                <!-- Key Rules Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Card 1 -->
+                    <div class="glass-card-sm p-5 rounded-xl border border-darkborder space-y-2">
+                        <div class="text-accent-teal font-bold text-sm flex items-center">
+                            <i class="fa-solid fa-circle-check mr-2"></i> Est-il nécessaire que A < B ?
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            <strong>Absolument pas.</strong> La multiplication est commutative ($A \times B = B \times A$). La soustraction croisée donne systématiquement la même valeur : $A - b = B - a = A + B - 100$.
+                        </p>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="glass-card-sm p-5 rounded-xl border border-darkborder space-y-2">
+                        <div class="text-accent-amber font-bold text-sm flex items-center">
+                            <i class="fa-solid fa-layer-group mr-2"></i> Que faire si le produit (a × b) ≥ 100 ?
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Le terme $(a \times b)$ représente les unités/dizaines. Si son résultat dépasse 99 (ex: $25 \times 20 = 500$), le chiffre des centaines constitue une <strong>retenue</strong> à ajouter directement au bloc de gauche.
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="glass-card-sm p-5 rounded-xl border border-darkborder space-y-2">
+                        <div class="text-brand-500 font-bold text-sm flex items-center">
+                            <i class="fa-solid fa-arrow-up-right-dots mr-2"></i> Fonctionne-t-il pour les nombres > 100 ?
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            <strong>Oui !</strong> Pour des nombres comme $107 \times 108$, les écarts sont positifs ($+7$ et $+8$). On effectue une <em>addition croisée</em> ($107 + 8 = 115$) et le produit des écarts ($7 \times 8 = 56$), soit $11556$.
+                        </p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="glass-card-sm p-5 rounded-xl border border-darkborder space-y-2">
+                        <div class="text-accent-rose font-bold text-sm flex items-center">
+                            <i class="fa-solid fa-gauge-high mr-2"></i> Pourquoi "proche de 100" ?
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            La formule est universellement vraie pour tout nombre. Cependant, si l'écart est grand (ex: $45 \times 60$), le produit des écarts ($55 \times 40$) devient plus difficile à calculer de tête que le produit initial !
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-darkborder/80 py-6 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>
+                © 2026 - Application de Calcul Mental Rapide (Base 100)
+            </div>
+            <div class="flex space-x-4">
+                <span class="hover:text-gray-400 transition cursor-pointer" onclick="switchTab('demo')">Calculateur</span>
+                <span class="hover:text-gray-400 transition cursor-pointer" onclick="switchTab('quiz')">Quiz</span>
+                <span class="hover:text-gray-400 transition cursor-pointer" onclick="switchTab('theory')">Démonstration</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Logic Script -->
+    <script>
+        /* Global State Variables */
+        let currentTab = 'demo';
+        let quizState = {
+            numA: 88,
+            numB: 96,
+            score: 0,
+            streak: 0,
+            totalAnswered: 0,
+            correctAnswered: 0,
+            solved: false
+        };
+
+        // Initialize application on page load
+        window.onload = function() {
+            calculateDemo();
+            generateQuizQuestion();
+        };
+
+        /* Tab Switcher */
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Hide all sections
+            document.getElementById('tab-demo').classList.add('hidden');
+            document.getElementById('tab-quiz').classList.add('hidden');
+            document.getElementById('tab-theory').classList.add('hidden');
+
+            // Reset tab button styles
+            ['demo', 'quiz', 'theory'].forEach(t => {
+                const btn = document.getElementById(`tab-${t}-btn`);
+                btn.className = 'tab-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center space-x-2 text-gray-400 hover:text-white';
+            });
+
+            // Activate current tab
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}-btn`);
+            activeBtn.className = 'tab-btn px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-semibold flex items-center space-x-2 bg-brand-600 text-white shadow-md';
+        }
+
+        /* Adjust Input Values (+ / - buttons) */
+        function adjustValue(inputId, delta) {
+            const input = document.getElementById(inputId);
+            let val = parseInt(input.value) || 0;
+            val = Math.max(50, Math.min(150, val + delta));
+            input.value = val;
+            calculateDemo();
+        }
+
+        /* Set Presets */
+        function setPreset(a, b) {
+            document.getElementById('input-a').value = a;
+            document.getElementById('input-b').value = b;
+            calculateDemo();
+        }
+
+        /* Core Math Breakdown Calculation for Demo */
+        function calculateDemo() {
+            const A = parseInt(document.getElementById('input-a').value) || 100;
+            const B = parseInt(document.getElementById('input-b').value) || 100;
+
+            const a = 100 - A; // Deviation from 100
+            const b = 100 - B;
+
+            const labelDiffA = document.getElementById('label-diff-a');
+            const labelDiffB = document.getElementById('label-diff-b');
+
+            labelDiffA.textContent = `Écart : ${a <= 0 ? '+' + Math.abs(a) : '-' + a}`;
+            labelDiffB.textContent = `Écart : ${b <= 0 ? '+' + Math.abs(b) : '-' + b}`;
+
+            // Step 1 UI
+            const step1A = document.getElementById('step1-a');
+            const step1B = document.getElementById('step1-b');
+            
+            step1A.innerHTML = `<span class="text-gray-400 text-xs block font-sans">Écart A</span>100 - ${A} = <span class="text-accent-teal font-bold">${a}</span>`;
+            step1B.innerHTML = `<span class="text-gray-400 text-xs block font-sans">Écart B</span>100 - ${B} = <span class="text-accent-teal font-bold">${b}</span>`;
+
+            // Step 2 UI: Product of deviations
+            const prodDev = a * b;
+            const step2Calc = document.getElementById('step2-calc');
+            const step2Note = document.getElementById('step2-note');
+
+            step2Calc.innerHTML = `<span class="text-accent-teal">${a}</span> × <span class="text-accent-teal">${b}</span> = <span class="text-accent-amber font-bold text-xl">${prodDev}</span>`;
+
+            // Step 3 UI: Cross operation
+            const crossOp = A - b; // equal to B - a
+            const step3Calc = document.getElementById('step3-calc');
+
+            const signB = b >= 0 ? '-' : '+';
+            const absB = Math.abs(b);
+            const signA = a >= 0 ? '-' : '+';
+            const absA = Math.abs(a);
+
+            step3Calc.innerHTML = `
+                ${A} ${signB} <span class="text-accent-teal">${absB}</span> = <span class="text-brand-500 font-bold text-xl">${crossOp}</span>
+                <span class="text-gray-500 text-xs mx-2">(ou ${B} ${signA} <span class="text-accent-teal">${absA}</span> = ${crossOp})</span>
+            `;
+
+            // Step 4 UI: Assembly
+            const actualProduct = A * B;
+            const step4Left = document.getElementById('step4-left');
+            const step4Right = document.getElementById('step4-right');
+            const step4Final = document.getElementById('step4-final');
+            const step4Msg = document.getElementById('step4-adjust-msg');
+
+            step4Left.textContent = crossOp;
+            step4Right.textContent = prodDev < 10 && prodDev >= 0 ? `0${prodDev}` : prodDev;
+            step4Final.textContent = actualProduct;
+
+            // Handle special cases: Padding or Carry over
+            step4Msg.classList.remove('hidden');
+            if (prodDev >= 0 && prodDev < 10) {
+                step4Msg.innerHTML = `<i class="fa-solid fa-circle-info text-accent-teal mr-1"></i> Note : Le produit des écarts (${prodDev}) comporte un seul chiffre, on ajoute un <strong>0</strong> devant (<strong class="font-mono">0${prodDev}</strong>).`;
+            } else if (prodDev >= 100) {
+                const carry = Math.floor(prodDev / 100);
+                const remainder = prodDev % 100;
+                const remStr = remainder < 10 ? `0${remainder}` : remainder;
+                step4Msg.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-accent-amber mr-1"></i> Retenue : Le produit des écarts (${prodDev}) a 3 chiffres. La centaine (${carry}) s'ajoute à ${crossOp} (${crossOp} + ${carry} = ${crossOp + carry}), suivi de ${remStr}.`;
+            } else if (prodDev < 0) {
+                step4Msg.innerHTML = `<i class="fa-solid fa-circle-info text-accent-rose mr-1"></i> Cas mixte : Nombres de côtés opposés de 100. On effectue le calcul $100 \\times ${crossOp} + (${prodDev}) = ${actualProduct}$.`;
+            } else {
+                step4Msg.innerHTML = `<i class="fa-solid fa-circle-check text-accent-emerald mr-1"></i> Cas standard : Juxtaposition directe de la partie gauche (${crossOp}) et droite (${prodDev}).`;
+            }
+
+            // Update main result card
+            document.getElementById('final-result').textContent = actualProduct;
+            document.getElementById('final-check').textContent = `Vérification : ${A} × ${B} = ${actualProduct}`;
+        }
+
+        /* --------------------------------------------------
+           QUIZ MODE LOGIC
+           -------------------------------------------------- */
+
+        function generateQuizQuestion() {
+            quizState.solved = false;
+
+            // Generate pairs close to 100
+            const types = ['below', 'above', 'mixed'];
+            const type = types[Math.floor(Math.random() * types.length)];
+
+            let a, b;
+            if (type === 'below') {
+                a = Math.floor(Math.random() * 15) + 84; // 84 to 98
+                b = Math.floor(Math.random() * 15) + 84; // 84 to 98
+            } else if (type === 'above') {
+                a = Math.floor(Math.random() * 12) + 101; // 101 to 112
+                b = Math.floor(Math.random() * 12) + 101; // 101 to 112
+            } else {
+                a = Math.floor(Math.random() * 10) + 91; // 91 to 100
+                b = Math.floor(Math.random() * 10) + 101; // 101 to 110
+            }
+
+            quizState.numA = a;
+            quizState.numB = b;
+
+            // Update UI
+            document.getElementById('quiz-question').textContent = `${a} × ${b}`;
+            document.getElementById('quiz-input').value = '';
+            document.getElementById('quiz-input').focus();
+
+            // Reset solution and feedback display
+            document.getElementById('quiz-feedback').className = 'hidden rounded-xl p-4 text-sm font-medium transition-all';
+            document.getElementById('quiz-solution-box').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.add('hidden');
+            document.getElementById('quiz-next-btn').classList.remove('flex');
+        }
+
+        function checkQuizAnswer(e) {
+            e.preventDefault();
+            if (quizState.solved) return;
+
+            const userVal = parseInt(document.getElementById('quiz-input').value);
+            const expectedVal = quizState.numA * quizState.numB;
+
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.classList.remove('hidden');
+
+            quizState.totalAnswered++;
+
+            if (userVal === expectedVal) {
+                // Correct Answer
+                quizState.solved = true;
+                quizState.score += 10 + (quizState.streak * 2);
+                quizState.streak++;
+                quizState.correctAnswered++;
+
+                feedback.className = 'rounded-xl p-4 text-sm font-semibold bg-accent-emerald/20 border border-accent-emerald/40 text-accent-emerald flex items-center justify-center space-x-2';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-check text-lg"></i><span>Bravo ! Excellent résultat : <strong>${expectedVal}</strong> !</span>`;
+
+                document.getElementById('quiz-next-btn').classList.remove('hidden');
+                document.getElementById('quiz-next-btn').classList.add('flex');
+            } else {
+                // Wrong Answer
+                quizState.streak = 0;
+                feedback.className = 'rounded-xl p-4 text-sm font-semibold bg-accent-rose/20 border border-accent-rose/40 text-accent-rose flex items-center justify-center space-x-2';
+                feedback.innerHTML = `<i class="fa-solid fa-circle-xmark text-lg"></i><span>Pas tout à fait. Essayez encore ou cliquez sur l'ampoule pour la solution.</span>`;
+            }
+
+            updateQuizStats();
+        }
+
+        function revealQuizSolution() {
+            const A = quizState.numA;
+            const B = quizState.numB;
+            const devA = 100 - A;
+            const devB = 100 - B;
+            const prodDev = devA * devB;
+            const crossOp = A - devB;
+            const actualProduct = A * B;
+
+            const solutionContent = document.getElementById('quiz-solution-content');
+            solutionContent.innerHTML = `
+                <div>• Écarts à 100 : <strong>${devA}</strong> et <strong>${devB}</strong></div>
+                <div>• Produit des écarts : ${devA} × ${devB} = <strong>${prodDev}</strong></div>
+                <div>• Soustraction / Addition croisée : ${A} - (${devB}) = <strong>${crossOp}</strong></div>
+                <div>• Résultat : <strong>${actualProduct}</strong></div>
+            `;
+
+            document.getElementById('quiz-solution-box').classList.remove('hidden');
+        }
+
+        function updateQuizStats() {
+            document.getElementById('quiz-score').textContent = quizState.score;
+            document.getElementById('quiz-streak').textContent = quizState.streak;
+
+            const accuracy = quizState.totalAnswered > 0 
+                ? Math.round((quizState.correctAnswered / quizState.totalAnswered) * 100) 
+                : 100;
+            document.getElementById('quiz-accuracy').textContent = `${accuracy}%`;
+        }
+    </script>
+</body>
+</html>
